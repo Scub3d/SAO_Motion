@@ -6,6 +6,7 @@
 * between Leap Motion and you, your company or other organization.             *
 \******************************************************************************/
 
+/*
 import java.awt.Color;
 import java.io.File;
 
@@ -57,7 +58,7 @@ class SampleListener extends Listener {
     public ScreenSwipe swipes;
     public ScreenTap tap;
 	public boolean droppedDown = false;
-	public saoComponent comp = new saoComponent();
+	public saoComponent_old comp = new saoComponent_old();
 	
 	@Override
 	public void onFrame(Controller controller) {
@@ -120,4 +121,6 @@ class SampleListener extends Listener {
 		frame.add(comp);
 		frame.setVisible(true);
 	}
-}
+}\
+
+*/
