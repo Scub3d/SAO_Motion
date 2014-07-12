@@ -275,7 +275,7 @@ public class saoComponent_old extends JComponent {
 	
 	public void drawTheImage(Graphics2D g2, Image img, int x, int y) {
 		g2.drawImage(img, x, y, new Color(0,0,0,0), this.imgObs);
-		}
+	}
 	
 	public void playSound(String sound) {
         try {
