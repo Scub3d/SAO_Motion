@@ -14,6 +14,6 @@ public abstract class Button {
 	public Image backgroundImage;
 	public Image foregroundImage;
 	
-	public abstract void onCreation(Graphics2D g2);
+	public abstract void onCreation(Graphics2D g2, int xPos, int yPos);
 
 }

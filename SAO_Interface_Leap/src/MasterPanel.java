@@ -15,11 +15,12 @@ public class MasterPanel extends JComponent {
 		super();
 		this.borb = new Orb();
 		requestFocus();
-		repaint();
 	}
 	
+	
+	
 	public void draw(Graphics2D g2) {
-		borb.onCreation(g2);
+		borb.onCreation(g2, 100, 100);
 	}
 
 	@Override

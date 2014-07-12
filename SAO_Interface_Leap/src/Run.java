@@ -19,7 +19,9 @@ public class Run {
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.add(masterPanel);
 		mainFrame.setVisible(true);
-		
+		while(true) {
+			masterPanel.repaint();
+		}
 	}
 
 }
