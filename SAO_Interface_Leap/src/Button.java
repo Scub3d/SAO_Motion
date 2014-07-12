@@ -1,4 +1,7 @@
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 
 
 public abstract class Button {
@@ -8,10 +11,8 @@ public abstract class Button {
 	public int xPos;
 	public int yPos;
 	public String type;
-	public String foregroundName;
-	public String foregroundBaseURL;
-	public String backgroundName;
-	public String backgroundBaseURL;
+	public Image backgroundImage;
+	public Image foregroundImage;
 	
 	public abstract void onCreation(Graphics2D g2);
 

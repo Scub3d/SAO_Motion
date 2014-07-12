@@ -9,19 +9,24 @@ import javax.swing.JComponent;
 
 public class MasterPanel extends JComponent {
 
+	Orb borb;
+	
 	public MasterPanel() {
 		super();
+		this.borb = new Orb();
+		requestFocus();
+		repaint();
 	}
 	
 	public void draw(Graphics2D g2) {
-		
+		borb.onCreation(g2);
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		draw(g2);
+			draw(g2);
 	}
 	
 	

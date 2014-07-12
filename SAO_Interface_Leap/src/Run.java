@@ -20,8 +20,6 @@ public class Run {
 		mainFrame.add(masterPanel);
 		mainFrame.setVisible(true);
 		
-		
-		mainFrame.repaint();
 	}
 
 }
