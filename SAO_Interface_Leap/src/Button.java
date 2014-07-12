@@ -13,6 +13,8 @@ public abstract class Button {
 	public String type;
 	public Image backgroundImage;
 	public Image foregroundImage;
+	public int width;
+	public int height;
 	
 	public abstract void onCreation(Graphics2D g2, int xPos, int yPos);
 

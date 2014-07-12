@@ -1,3 +1,5 @@
+/*
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -18,14 +20,14 @@ import javax.swing.JPanel;
 
 import com.leapmotion.leap.Vector;
 
-public class saoComponent extends JComponent {
+public class saoComponent_old extends JComponent {
 	
 	private TheHand hand;
 	private boolean isDropped;
 	private boolean menuCreated = false;
 	private ScreenTap tap; 
 
-	public saoComponent() {
+	public saoComponent_old() {
 		for(int orb = 0; orb < 5; orb++) {
 			this.orbIconsNormal[orb] = readImage("res/orbs/orb_icons/" + orbNames[orb] + "_normal.png");
 			this.orbIconsHoveredAndPressed [orb] = readImage("res/orbs/orb_icons/" + orbNames[orb] + "_hover.png");
@@ -273,7 +275,7 @@ public class saoComponent extends JComponent {
 	
 	public void drawTheImage(Graphics2D g2, Image img, int x, int y) {
 		g2.drawImage(img, x, y, new Color(0,0,0,0), this.imgObs);
-		}
+	}
 	
 	public void playSound(String sound) {
         try {
@@ -326,3 +328,5 @@ public class saoComponent extends JComponent {
 	}
 	
 }
+
+*/
