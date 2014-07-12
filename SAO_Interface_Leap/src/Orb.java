@@ -3,6 +3,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.awt.image.ImageObserver;
@@ -10,29 +12,23 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.Timer;
 
 
-public class Orb extends Button {
-
-	private int imgWidth;
-	private int imgHeight;
+public class Orb extends Button implements ActionListener {
 	
-	private ImageObserver i;
-	
-	BufferedImage drawnImage;
-	
-	Graphics g;
-	
-	public Orb() {
+	public Orb(File file, int yPos) {
 		super();
 		preLoadFiles();
+		this.timer = new Timer(1, this);
+		this.targetyPos = yPos;
+		this.increment = 0;
 	}
 	
 	public void preLoadFiles() {
 		try {
-			System.out.println("did we get here?");
 			this.backgroundImage = ImageIO.read(new File("res/orbs/backgrounds/btn_normal.png"));
-			System.out.println("File okay");
+			this.foregroundImage = ImageIO.read(new File("res/orbs/orb_icons/plugin_normal.png"));
 			this.imgWidth = this.backgroundImage.getWidth(null);
 			this.imgHeight = this.backgroundImage.getHeight(null);
 		} catch (IOException e) {
@@ -40,20 +36,42 @@ public class Orb extends Button {
 		}
 		this.drawnImage = new BufferedImage(this.imgWidth, this.imgHeight,
 			BufferedImage.TYPE_INT_ARGB);
-		g = this.drawnImage.getGraphics();
+		this.overlayImage = new BufferedImage(this.imgWidth, this.imgHeight,
+			BufferedImage.TYPE_INT_RGB);
 	}
 	
-	public void drawImages(Graphics2D g2, int xPos, int yPos) {
-		if(this.backgroundImage != null) {
+	public void startAnimation()
+	{
+		timer.start();
+	}
+	
+	public void onCreation(Graphics2D g2) { // This is the code for the starting animation
+		if(this.backgroundImage != null ) {
 			g2.drawImage(this.backgroundImage,
-					-32, -32, null);
+					150, increment + 32, null);
 		}
 	}
 
 	@Override
-	public void onCreation(Graphics2D g2, int xPos, int yPos) {
-		drawImages(g2, -32, -32);
-		System.out.println("Drawing");
+	public void draw(Graphics2D g2) { //
+		if(timer.isRunning()) {
+			onCreation(g2);
+		}
+		else g2.drawImage(this.backgroundImage,
+				150, targetyPos, null);
+		
+	}
+
+	@Override
+	public synchronized void actionPerformed(ActionEvent e) {
+		if(increment > targetyPos - 50) { 
+			this.increment += 2;
+			System.out.println("Done");
+		}
+		else this.increment += 8;
+		if(increment + 32 >= targetyPos) {
+			timer.stop();
+		}
 	}
 
 }
