@@ -14,23 +14,31 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
-
+/**
+ * The orb is for the initial balls that load. These orbs initially load a file, and then are instantiated
+ * in the MasterPanel. The update method determines which image should be used and the isFocused method
+ * determines whether or not a button is focused.
+ * @author wrightjt
+ *
+ */
 public class Orb extends Button implements ActionListener {
 	
-	
+	/**
+	 * 
+	 * @param file
+	 * @param yPos
+	 */
 	public Orb(File file, int yPos) {
 		
 		super();
 		
 		this.foregroundFile = file;
 		
-		this.timer = new Timer(1, this);
+		this.timer = new Timer(1, this); // Instantiates the timer for the Orb creation.
 		
-		this.targetyPos = yPos;
+		this.targetyPos = yPos; // The stated target position.
 		
-		this.increment = 0;
-		
-		preLoadFiles();
+		preLoadFiles(); // Pre-load all information regarding images, image dimensions, and other details.
 		
 	}
 	
@@ -39,14 +47,10 @@ public class Orb extends Button implements ActionListener {
 			this.backgroundImage = ImageIO.read(new File("res/orbs/backgrounds/btn_normal.png"));
 			this.foregroundImage = ImageIO.read(this.foregroundFile);
 			this.imgWidth = this.backgroundImage.getWidth(null);
-			this.imgHeight = this.backgroundImage.getHeight(null);
+			this.imgHeight = this.foregroundImage.getHeight(null);
 		} catch (IOException e) {
 			System.err.println("ERROR WITH ORB FILE");
 		}
-		//this.drawnImage = new BufferedImage(this.imgWidth, this.imgHeight,
-			//BufferedImage.TYPE_INT_ARGB);
-		// this.overlayImage = new BufferedImage(this.imgWidth, this.imgHeight,
-			//BufferedImage.TYPE_INT_ARGB);
 	}
 	
 	public void startAnimation()
@@ -64,26 +68,42 @@ public class Orb extends Button implements ActionListener {
 	}
 
 	@Override
-	public void draw(Graphics2D g2) { //
-		if(timer.isRunning()) {
+	public void draw(Graphics2D g2) { // Used for drawing
+		if(timer.isRunning()) { // Timer is running
 			onCreation(g2);
 		}
-		else {
-			g2.drawImage(this.backgroundImage, 150, targetyPos, null);
-			g2.drawImage(this.foregroundImage, 158, targetyPos+6, null);
-		}
-		
+		else { // Timer no longer running
+			g2.drawImage(this.backgroundImage, 150, targetyPos, null); // draw the background image after creation
+			g2.drawImage(this.foregroundImage, 159, targetyPos+6, null); // draw the foreground image after creation
+		}	
 	}
 
 	@Override
-	public synchronized void actionPerformed(ActionEvent e) {
+	public synchronized void actionPerformed(ActionEvent e) { // Used for timing and alternating positions. 
 		if(this.increment > targetyPos - 100) { 
 			this.increment += 1;
 			System.out.println("Done");
 		}
-		else this.increment += 3;
+		else this.increment += 4;
 		if(this.increment + 32 >= targetyPos) {
 			timer.stop();
+		}
+	}
+
+	@Override
+	public void isFocused(boolean state) { 
+		this.inHighlightedState = state;
+	}
+
+	@Override
+	public void update() {
+		try {
+			if(this.inHighlightedState) {
+				this.backgroundImage = ImageIO.read(new File("res/orbs/backgrounds/btn_hover.png"));
+			}
+			else this.backgroundImage = ImageIO.read(new File("res/orbs/backgrounds/btn_normal.png"));
+		} catch (IOException e) {
+			System.err.println("ERROR READING HOVER FILE");
 		}
 	}
 

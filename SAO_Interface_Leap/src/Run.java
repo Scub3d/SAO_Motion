@@ -9,14 +9,6 @@ public class Run {
 
 	public static void main(String[] args) {
 		
-		long FRAME_NANO_SECONDS = 1000*1000*1000 / 24;
-		
-		long startTime, deltaTime, sleepTime;
-		
-		int timeOver;
-		
-		startTime = System.currentTimeMillis();
-		
 		JFrame mainFrame = new JFrame(); //Creates the frame for SAO to work on
 		
 		MasterPanel masterPanel = new MasterPanel();
@@ -27,21 +19,6 @@ public class Run {
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.add(masterPanel);
 		mainFrame.setVisible(true);
-		
-		while(true) {
-		
-			masterPanel.repaint();
-			
-			try {
-				Thread.sleep(33);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
-		}
-		
 	}
 
 }

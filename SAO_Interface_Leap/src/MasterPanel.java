@@ -6,6 +6,8 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 
 import javax.sound.sampled.AudioInputStream;
@@ -15,22 +17,55 @@ import javax.swing.JComponent;
 import javax.swing.Timer;
 
 
-public class MasterPanel extends JComponent {
+public class MasterPanel extends JComponent implements Runnable, KeyListener{
 
 	Orb orbs[];
 	int screenHeight;
 	int startingOrbyPos;
 	
 	File topImage;
+	int numberOfOrbs = 5;
+	int selectedOrb = 0;
+	Thread SAOthread;
+	
+	private static boolean[] keyboardState = new boolean[525];
 	
 	public MasterPanel() {
 		
 		super();
+		
 		this.orbs = new Orb[5];
 		
 		playSound("res/sounds/open.wav"); // play the opening sound file
+		this.setFocusable(true);
 		requestFocus(); // set the focus to this panel
-		initialize(); 
+		this.addKeyListener(this);
+		
+		if(this.SAOthread == null) {
+			this.SAOthread = new Thread(this);
+			this.SAOthread.start();
+		}
+		
+		
+	}
+	
+	public void update() {
+		for(int orb = 0; orb < orbs.length; orb++) {
+			orbs[orb].update();
+		}
+		orbs[selectedOrb].isFocused(true);
+		if(keyboardState[KeyEvent.VK_DOWN])
+		{
+			orbs[selectedOrb].isFocused(false);
+			this.selectedOrb++;
+			System.out.println(this.selectedOrb);
+			if(this.selectedOrb >= numberOfOrbs) {
+				this.selectedOrb = 0;
+			} 
+			else if(this.selectedOrb < 0) {
+				this.selectedOrb = 5;
+			} 
+		}
 	}
 	
 	public void initialize() {
@@ -38,9 +73,11 @@ public class MasterPanel extends JComponent {
 		this.screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 		this.startingOrbyPos = screenHeight / 4;
 		for(int i = 0; i < 5; i++) {
-			this.orbs[i] = new Orb(topImage, startingOrbyPos + (72 * i));
-			this.orbs[i].startAnimation();
-			
+			this.orbs[i] = new Orb(topImage, startingOrbyPos + (72 * i));	
+		}
+		
+		for(int x = 0; x < 5; x++) {
+			this.orbs[x].startAnimation();
 		}
 	}
 	
@@ -71,5 +108,46 @@ public class MasterPanel extends JComponent {
             System.out.println("Error with playing sound.");
             ex.printStackTrace();
         }
-    }	
+    }
+	
+	public static boolean getKeyboardState(int key) {
+		return keyboardState[key];
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		keyboardState[e.getKeyCode()] = true;
+		System.out.println("anything here?");
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		keyboardState[e.getKeyCode()] = false;
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void run() {
+		
+		initialize();
+		
+		while(true) {
+			
+			update();
+			repaint();
+			
+			try {
+				Thread.sleep(33);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}	
 }

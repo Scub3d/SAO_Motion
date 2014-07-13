@@ -14,9 +14,9 @@ public abstract class Button {
 	public int targetxPos; // Places a target x-Coordinate position
 	public int targetyPos; // Places a target y-Coordinate position
 	
-	public int increment; // Used for incrementing animation
+	public int increment = 0; // Used for incrementing animation
 	
-	protected File foregroundFile;
+	protected File foregroundFile; // The foreground file to be used
 	
 	public Image backgroundImage; // The base button image
 	public Image foregroundImage; // The image to be overlayed
@@ -37,5 +37,13 @@ public abstract class Button {
 	 * @param g2 The graphics for which to draw to.
 	 */
 	public abstract void draw(Graphics2D g2);
+	
+	public abstract void update();
+	
+	/**
+	 * Determines whether or not the button is focused or not.
+	 * @return If the button is focused or not.
+	 */
+	public abstract void isFocused(boolean state);
 
 }
