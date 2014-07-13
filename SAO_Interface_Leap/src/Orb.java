@@ -63,7 +63,7 @@ public class Orb extends Button implements ActionListener {
 			g2.drawImage(this.backgroundImage,
 					150, increment + 32, null);
 			g2.drawImage(this.foregroundImage,
-					160, increment + 36, null);
+					159, increment + 36, null);
 		}
 	}
 
