@@ -18,7 +18,7 @@ public abstract class Button {
 	public int targetxPos; // Places a target x-Coordinate position
 	public int targetyPos; // Places a target y-Coordinate position
 	
-	public int increment = 0; // Used for incrementing animation
+	public int increment = 32; // Used for incrementing animation
 	
 	protected File foregroundFile; // The foreground file to be used
 	
@@ -27,7 +27,8 @@ public abstract class Button {
 	
 	protected int imgWidth; // Image width
 	protected int imgHeight; // Image height
-	protected Timer timer; // Timer used for timing animations cleanly in Swing
+	
+	public boolean doneAnimating = false;
 	
 	/**
 	 * This method is used for initializing the program.

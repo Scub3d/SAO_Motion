@@ -96,7 +96,6 @@ public class MasterPanel extends JComponent implements Runnable, KeyListener{
 				lastUpdateTime = now - TIME_BETWEEN_UPDATES;
 			}
 			
-			float interpolation = Math.min(1.0f, (float) ((now - lastUpdateTime) / TIME_BETWEEN_UPDATES) );
             repaint();
             lastRenderTime = now;
             
@@ -139,10 +138,6 @@ public class MasterPanel extends JComponent implements Runnable, KeyListener{
 		this.startingOrbyPos = screenHeight / 4;
 		for(int i = 0; i < 5; i++) {
 			this.orbs[i] = new Orb(topImage, startingOrbyPos + (72 * i));	
-		}
-		
-		for(int x = 0; x < 5; x++) {
-			this.orbs[x].startAnimation();
 		}
 	}
 	

@@ -21,7 +21,9 @@ import javax.swing.Timer;
  * @author wrightjt
  *
  */
-public class Orb extends Button implements ActionListener {
+public class Orb extends Button {
+	
+	private int animationSlower = 0;
 	
 	/**
 	 * 
@@ -33,8 +35,6 @@ public class Orb extends Button implements ActionListener {
 		super();
 		
 		this.foregroundFile = file;
-		
-		this.timer = new Timer(1, this); // Instantiates the timer for the Orb creation.
 		
 		this.targetyPos = yPos; // The stated target position.
 		
@@ -53,53 +53,40 @@ public class Orb extends Button implements ActionListener {
 		}
 	}
 	
-	public void startAnimation()
-	{
-		timer.start();
-	}
-	
 	public void onCreation(Graphics2D g2) { // This is the code for the starting animation
 		if(this.backgroundImage != null && this.foregroundImage != null) {
 			g2.drawImage(this.backgroundImage,
-					150, increment + 32, null);
+					150, increment, null);
 			g2.drawImage(this.foregroundImage,
-					159, increment + 36, null);
+					159, increment+4, null);
 		}
 	}
 
 	@Override
 	public void draw(Graphics2D g2) { // Used for drawing
-		if(timer.isRunning()) { // Timer is running
-			onCreation(g2);
+		if(!doneAnimating)
+		{
+			onCreation(g2); // Timer no longer running
 		}
-		else { // Timer no longer running
-			g2.drawImage(this.backgroundImage, 150, targetyPos, null); // draw the background image after creation
-			g2.drawImage(this.foregroundImage, 159, targetyPos+6, null); // draw the foreground image after creation
-		}	
-	}
+		g2.drawImage(this.backgroundImage, 150, targetyPos, null); // draw the background image after creation
+		g2.drawImage(this.foregroundImage, 159, targetyPos+6, null); // draw the foreground image after creation
+	}	
 
-	@Override
-	public void actionPerformed(ActionEvent e) { // Used for timing and alternating positions. 
-		if(this.increment > targetyPos - 50) { 
-			this.increment += 1;
-		}
-		else this.increment += 4;
-		if(this.increment + 32 >= targetyPos) {
-			timer.stop();
-		}
-	}
-
+	
 	@Override
 	public void update() {
-		try {
-			if(this.inHighlightedState) {
-				this.backgroundImage = ImageIO.read(new File("res/orbs/backgrounds/btn_hover.png"));
+		if(!doneAnimating) {
+			this.animationSlower = 0;
+			System.out.println(increment);
+			if(this.increment <= this.targetyPos-50) {
+				increment += 1;
 			}
-			else this.backgroundImage = ImageIO.read(new File("res/orbs/backgrounds/btn_normal.png"));
-		} catch (IOException e) {
-			System.err.println("ERROR READING HOVER FILE");
+			
+			else if(this.increment <= this.targetyPos && this.increment > this.targetyPos - 50) {
+				increment += 1;
+			}
+			
+			else this.doneAnimating = true;
 		}
 	}
-
-
 }
