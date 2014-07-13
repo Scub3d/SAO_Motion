@@ -38,11 +38,11 @@ public class Orb extends Button implements ActionListener {
 		
 		this.targetyPos = yPos; // The stated target position.
 		
-		preLoadFiles(); // Pre-load all information regarding images, image dimensions, and other details.
+		initialize(); // Pre-load all information regarding images, image dimensions, and other details.
 		
 	}
-	
-	public void preLoadFiles() {
+	@Override
+	public void initialize() {
 		try {
 			this.backgroundImage = ImageIO.read(new File("res/orbs/backgrounds/btn_normal.png"));
 			this.foregroundImage = ImageIO.read(this.foregroundFile);
@@ -79,20 +79,14 @@ public class Orb extends Button implements ActionListener {
 	}
 
 	@Override
-	public synchronized void actionPerformed(ActionEvent e) { // Used for timing and alternating positions. 
-		if(this.increment > targetyPos - 100) { 
+	public void actionPerformed(ActionEvent e) { // Used for timing and alternating positions. 
+		if(this.increment > targetyPos - 50) { 
 			this.increment += 1;
-			System.out.println("Done");
 		}
 		else this.increment += 4;
 		if(this.increment + 32 >= targetyPos) {
 			timer.stop();
 		}
-	}
-
-	@Override
-	public void isFocused(boolean state) { 
-		this.inHighlightedState = state;
 	}
 
 	@Override
@@ -106,5 +100,6 @@ public class Orb extends Button implements ActionListener {
 			System.err.println("ERROR READING HOVER FILE");
 		}
 	}
+
 
 }
