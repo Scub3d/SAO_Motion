@@ -22,6 +22,7 @@ import com.leapmotion.leap.Controller;
 public class MasterPanel extends JComponent implements Runnable, KeyListener{
 
 	Orb orbs[];
+	ExecutableItem tester;
 	int screenHeight;
 	int startingOrbyPos;
 	
@@ -51,6 +52,7 @@ public class MasterPanel extends JComponent implements Runnable, KeyListener{
 			this.SAOthread = new Thread(this);
 			this.SAOthread.start();
 		}	
+		setDoubleBuffered(true);
 	}
 	
 	
@@ -135,12 +137,14 @@ public class MasterPanel extends JComponent implements Runnable, KeyListener{
 	
 	public void initialize() {
 		
+		tester = new ExecutableItem(new File("res/orbs/orb_icons/info_normal.png"), 400, 400, "none", "none");
 		this.topImage = new File("res/orbs/orb_icons/info_normal.png");
 		this.screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 		this.startingOrbyPos = screenHeight / 4;
 		for(int i = 0; i < 5; i++) {
 			this.orbs[i] = new Orb(topImage, startingOrbyPos + (72 * i));	
 		}
+		
 	}
 	
 	
@@ -150,6 +154,7 @@ public class MasterPanel extends JComponent implements Runnable, KeyListener{
 		if(orbs[2] != null) orbs[2].draw(g2);
 		if(orbs[3] != null) orbs[3].draw(g2);
 		if(orbs[4] != null) orbs[4].draw(g2);
+		if(tester != null) tester.draw(g2);
 	}
 
 	@Override

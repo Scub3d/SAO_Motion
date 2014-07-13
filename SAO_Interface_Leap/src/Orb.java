@@ -80,12 +80,12 @@ public class Orb extends Button {
 		if(!doneAnimating) {
 			this.animationSlower = 0;
 			System.out.println(increment);
-			if(this.increment <= this.targetyPos-25) {
+			if(this.increment <= this.targetyPos-36) {
 				increment += 16;
 			}
 			
-			else if(this.increment <= this.targetyPos && this.increment > this.targetyPos - 25) {
-				increment += 8;
+			else if(this.increment <= this.targetyPos && this.increment > this.targetyPos - 36) {
+				increment += 4;
 			}
 			
 			else this.doneAnimating = true;
