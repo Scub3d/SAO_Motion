@@ -74,10 +74,8 @@ public class Orb extends Button implements ActionListener {
 			onCreation(g2);
 		}
 		else {
-			g2.drawImage(this.backgroundImage,
-				150, targetyPos, null);
-			g2.drawImage(this.foregroundImage,
-					158, targetyPos+6, null);
+			g2.drawImage(this.backgroundImage, 150, targetyPos, null);
+			g2.drawImage(this.foregroundImage, 158, targetyPos+6, null);
 		}
 		
 	}

@@ -34,7 +34,7 @@ public class MasterPanel extends JComponent {
 	}
 	
 	public void initialize() {
-		this.topImage = new File("res/orb_icons/info_normal.png");
+		this.topImage = new File("res/orbs/orb_icons/info_normal.png");
 		this.screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 		this.startingOrbyPos = screenHeight / 4;
 		for(int i = 0; i < 5; i++) {

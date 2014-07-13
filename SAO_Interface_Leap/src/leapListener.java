@@ -13,6 +13,7 @@ import com.leapmotion.leap.Gesture.State;
 import com.leapmotion.leap.GestureList;
 import com.leapmotion.leap.Hand;
 import com.leapmotion.leap.Listener;
+import com.leapmotion.leap.Pointable;
 import com.leapmotion.leap.ScreenTapGesture;
 import com.leapmotion.leap.SwipeGesture;
 
@@ -50,18 +51,29 @@ class leapListener extends Listener {
 	
 	@Override
 	public void onFrame(Controller controller) {
-        Frame controller_frame = controller.frame();    // 3.0f , 1f, .2f also works okay
-        if(controller.config().setFloat("Gesture.ScreenTap.MinForwardVelocity", 3.0f) &&
-           controller.config().setFloat("Gesture.ScreenTap.HistorySeconds", 1f) &&
-           controller.config().setFloat("Gesture.ScreenTap.MinDistance", 0.2f)) {
-            	controller.config().save();
+        Frame current_frame = controller.frame();    // 3.0f , 1f, .2f also works okay
+        Frame previous_frame = controller.frame(1);
+        
+        if(previous_frame.isValid()) {
+            for (int p = 0; p < current_frame.pointables().count();p++) {
+            	Pointable pN = current_frame.pointables().get(p);
+                Pointable pN_prev = previous_frame.pointable(pN.id());
+
+                if (!pN_prev.isValid())
+                    continue; 
+
+                if (pN_prev.touchDistance() <= 0 && pN.touchDistance() > 0) {
+                    System.out.format("Leap Thread: Pointable %d tapped\n",pN.id());
+                }
+            }
         }
-        System.out.println("Frame id: " + controller_frame.id() + ", timestamp: " + controller_frame.timestamp() + ", hands: " + controller_frame.hands().count() + ", fingers: " + controller_frame.fingers().count() + ", tools: " + controller_frame.tools().count() + ", gestures " + controller_frame.gestures().count());
-        if (!controller_frame.hands().isEmpty()) {
+ 
+        System.out.println("Frame id: " + current_frame.id() + ", timestamp: " + current_frame.timestamp() + ", hands: " + current_frame.hands().count() + ", fingers: " + current_frame.fingers().count() + ", tools: " + current_frame.tools().count() + ", gestures " + current_frame.gestures().count());
+        if (!current_frame.hands().isEmpty()) {
         	this.hand = new Hand();
         }
 
-        GestureList gestures = controller_frame.gestures();
+        GestureList gestures = current_frame.gestures();
         for (int i = 0; i < gestures.count(); i++) {
             Gesture gesture = gestures.get(i);
 
@@ -88,7 +100,7 @@ class leapListener extends Listener {
             }
         }
 
-        if (!controller_frame.hands().isEmpty() || !gestures.isEmpty()) {
+        if (!current_frame.hands().isEmpty() || !gestures.isEmpty()) {
             //System.out.println(); Pass along data or just pass along even if there is no data. Probably the latter is better
         }
     }
