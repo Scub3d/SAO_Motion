@@ -17,9 +17,6 @@ import javax.swing.Timer;
 
 public class Orb extends Button implements ActionListener {
 	
-	boolean done;
-	
-	File foregroundFile;
 	
 	public Orb(File file, int yPos) {
 		
@@ -32,8 +29,6 @@ public class Orb extends Button implements ActionListener {
 		this.targetyPos = yPos;
 		
 		this.increment = 0;
-		
-		this.done = false;
 		
 		preLoadFiles();
 		
@@ -79,21 +74,16 @@ public class Orb extends Button implements ActionListener {
 		}
 		
 	}
-	
-	public boolean isCompleted() {
-		return done;
-	}
 
 	@Override
 	public synchronized void actionPerformed(ActionEvent e) {
-		if(this.increment > targetyPos - 50) { 
+		if(this.increment > targetyPos - 100) { 
 			this.increment += 1;
 			System.out.println("Done");
 		}
 		else this.increment += 3;
 		if(this.increment + 32 >= targetyPos) {
 			timer.stop();
-			this.done = true;
 		}
 	}
 

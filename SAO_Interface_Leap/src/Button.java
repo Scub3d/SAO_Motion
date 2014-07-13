@@ -2,6 +2,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
+import java.io.File;
 
 import javax.swing.Timer;
 
@@ -15,17 +16,26 @@ public abstract class Button {
 	
 	public int increment; // Used for incrementing animation
 	
+	protected File foregroundFile;
+	
 	public Image backgroundImage; // The base button image
 	public Image foregroundImage; // The image to be overlayed
-	public BufferedImage drawnImage; // The buffered image
-	public BufferedImage overlayImage; // The overlayed image
+	
 	protected int imgWidth; // Image width
 	protected int imgHeight; // Image height
 	
-	protected Timer timer;
+	protected Timer timer; // Timer used for timing animations cleanly in Swing
 	
+	/**
+	 * This should be used for loading beginning animations for orbs and for content panes alike.
+	 * @param g2 The graphics for which to draw to.
+	 */
 	public abstract void onCreation(Graphics2D g2);
 
+	/**
+	 * All drawing should be carried out here. Animations can use the timer for running the "onCreation" method.
+	 * @param g2 The graphics for which to draw to.
+	 */
 	public abstract void draw(Graphics2D g2);
 
 }
