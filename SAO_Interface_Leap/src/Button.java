@@ -10,10 +10,10 @@ public abstract class Button {
 	
 	public boolean inLockState; // Allows a button to be in lock state
 	public boolean inHighlightedState; // Changes whether the button is highlighted or not
-	public int targetxPos;
-	public int targetyPos;
-	public int increment;
-	public String type;
+	public int targetxPos; // Places a target x-Coordinate position
+	public int targetyPos; // Places a target y-Coordinate position
+	
+	public int increment; // Used for incrementing animation
 	
 	public Image backgroundImage; // The base button image
 	public Image foregroundImage; // The image to be overlayed

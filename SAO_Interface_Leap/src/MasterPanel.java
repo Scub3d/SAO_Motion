@@ -15,29 +15,30 @@ import javax.swing.JComponent;
 import javax.swing.Timer;
 
 
-public class MasterPanel extends JComponent implements ActionListener {
+public class MasterPanel extends JComponent {
 
 	Orb orbs[];
 	int screenHeight;
 	int startingOrbyPos;
 	
-	Timer startupTimer;
+	File topImage;
+	
 	public MasterPanel() {
 		
 		super();
 		this.orbs = new Orb[5];
 		
-		playSound("res/sounds/open.wav");
-		requestFocus();
-		initialize();
+		playSound("res/sounds/open.wav"); // play the opening sound file
+		requestFocus(); // set the focus to this panel
+		initialize(); 
 	}
 	
 	public void initialize() {
-		this.startupTimer = new Timer(15, this);
+		this.topImage = new File("res/orb_icons/info_normal.png");
 		this.screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 		this.startingOrbyPos = screenHeight / 4;
 		for(int i = 0; i < 5; i++) {
-			this.orbs[i] = new Orb(new File("res/orb_icons/info_hover"), startingOrbyPos + (72 * i));
+			this.orbs[i] = new Orb(this.topImage, startingOrbyPos + (72 * i));
 			this.orbs[i].startAnimation();
 			
 		}
@@ -45,10 +46,10 @@ public class MasterPanel extends JComponent implements ActionListener {
 	
 	public void draw(Graphics2D g2) {
 		if(orbs[0] != null) orbs[0].draw(g2);
-		if(orbs[1] != null) orbs[1].draw(g2);
-		if(orbs[2] != null) orbs[2].draw(g2);
-		if(orbs[3] != null) orbs[3].draw(g2);
-		if(orbs[4] != null) orbs[4].draw(g2);
+		if(orbs[1] != null && orbs[0].isCompleted()) orbs[1].draw(g2);
+		if(orbs[2] != null && orbs[1].isCompleted()) orbs[2].draw(g2);
+		if(orbs[3] != null && orbs[2].isCompleted()) orbs[3].draw(g2);
+		if(orbs[4] != null && orbs[3].isCompleted()) orbs[4].draw(g2);
 		
 		
 	}
@@ -70,13 +71,5 @@ public class MasterPanel extends JComponent implements ActionListener {
             System.out.println("Error with playing sound.");
             ex.printStackTrace();
         }
-    }
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
+    }	
 }
