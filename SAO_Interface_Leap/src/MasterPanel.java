@@ -31,7 +31,7 @@ public class MasterPanel extends JComponent implements Runnable, KeyListener{
 	Thread SAOthread;
 	
 	
-	int fps = 30;
+	int fps = 60;
 	int frameCount = 0;
 	
 	private static boolean[] keyboardState = new boolean[525];
@@ -57,7 +57,7 @@ public class MasterPanel extends JComponent implements Runnable, KeyListener{
 	@Override
 	public void run() {
 		
-		final double GAME_HERTZ = 15.0;
+		final double GAME_HERTZ = 30.0;
 		
 		// Keeps updates from out-doing rendering
 		final int MAX_UPDATES_BEFORE_RENDER = 5;
@@ -69,17 +69,19 @@ public class MasterPanel extends JComponent implements Runnable, KeyListener{
 		// Last render time
 		double lastRenderTime = System.nanoTime();
 		
-		final double TARGET_FPS = 30;
+		final double TARGET_FPS = 60;
+		
 		final double TARGET_TIME_BETWEEN_RENDERS = 1000000000 / TARGET_FPS;
 		
-		int lastSecondTime = (int) (lastUpdateTime/1000000000);
+		int lastSecondTime = (int) (lastUpdateTime / 1000000000);
 		
-		initialize();
 			
 		leapListener listener = new leapListener();
 		Controller controller = new Controller();
 		
 		controller.addListener(listener);
+		
+		initialize();
 		
 		while(true) {
 			
@@ -88,7 +90,7 @@ public class MasterPanel extends JComponent implements Runnable, KeyListener{
 		
 			while( now - lastUpdateTime > TIME_BETWEEN_UPDATES && updateCount < MAX_UPDATES_BEFORE_RENDER ) {
 				update();
-				lastUpdateTime = lastUpdateTime / TIME_BETWEEN_UPDATES;
+				lastUpdateTime += TIME_BETWEEN_UPDATES;
 				updateCount++;
 			}
 			

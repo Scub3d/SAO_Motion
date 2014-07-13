@@ -54,7 +54,7 @@ public class Orb extends Button {
 	}
 	
 	public void onCreation(Graphics2D g2) { // This is the code for the starting animation
-		if(this.backgroundImage != null && this.foregroundImage != null) {
+		if(this.backgroundImage != null && this.foregroundImage != null && !doneAnimating) {
 			g2.drawImage(this.backgroundImage,
 					150, increment, null);
 			g2.drawImage(this.foregroundImage,
@@ -68,8 +68,10 @@ public class Orb extends Button {
 		{
 			onCreation(g2); // Timer no longer running
 		}
-		g2.drawImage(this.backgroundImage, 150, targetyPos, null); // draw the background image after creation
-		g2.drawImage(this.foregroundImage, 159, targetyPos+6, null); // draw the foreground image after creation
+		else {
+			g2.drawImage(this.backgroundImage, 150, targetyPos, null); // draw the background image after creation
+			g2.drawImage(this.foregroundImage, 159, targetyPos+6, null); // draw the foreground image after creation
+		}
 	}	
 
 	
@@ -78,12 +80,12 @@ public class Orb extends Button {
 		if(!doneAnimating) {
 			this.animationSlower = 0;
 			System.out.println(increment);
-			if(this.increment <= this.targetyPos-50) {
-				increment += 1;
+			if(this.increment <= this.targetyPos-25) {
+				increment += 16;
 			}
 			
-			else if(this.increment <= this.targetyPos && this.increment > this.targetyPos - 50) {
-				increment += 1;
+			else if(this.increment <= this.targetyPos && this.increment > this.targetyPos - 25) {
+				increment += 8;
 			}
 			
 			else this.doneAnimating = true;
