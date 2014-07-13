@@ -16,6 +16,7 @@ import com.leapmotion.leap.Listener;
 import com.leapmotion.leap.Pointable;
 import com.leapmotion.leap.ScreenTapGesture;
 import com.leapmotion.leap.SwipeGesture;
+import com.leapmotion.leap.Vector;
 
 class leapListener extends Listener {
 
@@ -46,8 +47,7 @@ class leapListener extends Listener {
     public Hand hand;
     public SwipeGesture swipes;
     public ScreenTapGesture tap;
-	public boolean droppedDown = false;
-
+	public boolean isCreated = false;
 	
 	@Override
 	public void onFrame(Controller controller) {
@@ -58,6 +58,7 @@ class leapListener extends Listener {
             for (int p = 0; p < current_frame.pointables().count();p++) {
             	Pointable pN = current_frame.pointables().get(p);
                 Pointable pN_prev = previous_frame.pointable(pN.id());
+                //System.out.println(pN_prev.touchDistance() + ", " + pN.touchDistance());
 
                 if (!pN_prev.isValid())
                     continue; 
@@ -72,7 +73,7 @@ class leapListener extends Listener {
         if (!current_frame.hands().isEmpty()) {
         	this.hand = new Hand();
         }
-
+        
         GestureList gestures = current_frame.gestures();
         for (int i = 0; i < gestures.count(); i++) {
             Gesture gesture = gestures.get(i);
@@ -81,21 +82,22 @@ class leapListener extends Listener {
                 case TYPE_SWIPE:
                 	this.swipes = new SwipeGesture(gesture);
                 	if(this.swipes.state() == State.STATE_START) {
-	                	if(this.swipes.direction().getY() < -.5 && Math.abs(this.swipes.direction().getX()) < .35 && Math.abs(this.swipes.direction().getZ()) < .35 && this.droppedDown == false) {
-	                		this.droppedDown = true;
-	                	} else if(this.swipes.direction().getX() < -.5 && Math.abs(this.swipes.direction().getY()) < .35 && Math.abs(this.swipes.direction().getZ()) < .35 && this.droppedDown == true) {
-	                		this.droppedDown = false;
+                		System.out.println(this.swipes.direction());
+	                	if(this.swipes.direction().getY() < -.5 && Math.abs(this.swipes.direction().getX()) < .35 && Math.abs(this.swipes.direction().getZ()) < .35 && this.isCreated == false) {
+	                		this.isCreated = true;
+	                	} else if(this.swipes.direction().getX() < -.5 && Math.abs(this.swipes.direction().getY()) < .35 && Math.abs(this.swipes.direction().getZ()) < .35 && this.isCreated == true) {
+	                		this.isCreated = false;
 	                	}
-                	}
+                	} 
 		            break;
 		            
 		        case TYPE_SCREEN_TAP:
-		        	this.tap = new ScreenTapGesture(gesture);		
-		        	System.out.println("Tap state: " + this.tap.state() + ",   Tap Position = " + this.tap.position());
+		        	//this.tap = new ScreenTapGesture(gesture);		
+		        	//System.out.println("Tap state: " + this.tap.state() + ",   Tap Position = " + this.tap.position());
 		            break;
 		                         
                 default:
-                    System.out.println("Unknown gesture type." + "\n");
+                    //System.out.println("Unknown gesture type." + "\n");
                     break;
             }
         }

@@ -16,6 +16,8 @@ import javax.sound.sampled.Clip;
 import javax.swing.JComponent;
 import javax.swing.Timer;
 
+import com.leapmotion.leap.Controller;
+
 
 public class MasterPanel extends JComponent implements Runnable, KeyListener{
 
@@ -137,6 +139,11 @@ public class MasterPanel extends JComponent implements Runnable, KeyListener{
 		
 		initialize();
 		
+		leapListener listener = new leapListener();
+		Controller controller = new Controller();
+		
+		controller.addListener(listener);
+		
 		while(true) {
 			
 			update();
@@ -147,6 +154,7 @@ public class MasterPanel extends JComponent implements Runnable, KeyListener{
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				controller.removeListener(listener);
 			}
 		}
 	}	
