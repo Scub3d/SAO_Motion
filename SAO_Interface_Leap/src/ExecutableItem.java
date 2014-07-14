@@ -46,12 +46,6 @@ public class ExecutableItem extends Button  {
 
 	@Override
 	public void draw(Graphics2D g2) {
-		if(!doneAnimating) {
-			onCreation(g2);
-		}
-		else {
-			g2.drawImage(this.backgroundImage, targetxPos, targetyPos, null);
-		}
 
 	}
 
@@ -59,5 +53,11 @@ public class ExecutableItem extends Button  {
 	public void update() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void onDestruction(Graphics2D g2) {
+		// TODO Auto-generated method stub
+		
 	}
 }

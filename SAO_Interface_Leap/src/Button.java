@@ -13,12 +13,23 @@ import javax.swing.Timer;
  */
 public abstract class Button {
 	
+	protected final int CREATING = 1;
+	protected final int DESTROYING = 0;
+	protected final int HOLDING = 2;
+	protected final int DESTROYED = -1;
+	protected int state;
+	
+	
 	public boolean inLockState; // Allows a button to be in lock state
 	public boolean inHighlightedState; // Changes whether the button is highlighted or not
 	public int targetxPos; // Places a target x-Coordinate position
 	public int targetyPos; // Places a target y-Coordinate position
+	public int currentxPos;
+	public int currentyPos;
+	public int startingxPos;
+	public int startingyPos;
 	
-	public int increment = 32; // Used for incrementing animation
+	public int increment; // Used for incrementing animation
 	
 	protected File foregroundFile; // The foreground file to be used
 	
@@ -27,8 +38,6 @@ public abstract class Button {
 	
 	protected int imgWidth; // Image width
 	protected int imgHeight; // Image height
-	
-	public boolean doneAnimating = false;
 	
 	/**
 	 * This method is used for initializing the program.
@@ -45,6 +54,12 @@ public abstract class Button {
 	 * @param g2 The graphics for which to draw to.
 	 */
 	public abstract void onCreation(Graphics2D g2);
+	
+	/**
+	 * Reset animations, reset values and variables, and generally reset the UI.
+	 * @param g2
+	 */
+	public abstract void onDestruction(Graphics2D g2);
 
 	/**
 	 * All drawing should be carried out here. Animations can use the timer for running the "onCreation" method.
@@ -62,8 +77,12 @@ public abstract class Button {
 	}
 	
 
-	public int getCenteredxPosition() {
-		return this.targetxPos + this.imgWidth;
+	public int getxCreationPoint() {
+		return (this.targetxPos + this.imgHeight);
+	}
+	
+	public int getyCreationPoint() {
+		return this.targetyPos + (this.imgWidth/2);
 	}
 	
 }

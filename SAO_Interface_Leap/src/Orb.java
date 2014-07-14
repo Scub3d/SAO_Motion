@@ -23,20 +23,26 @@ import javax.swing.Timer;
  */
 public class Orb extends Button {
 	
-	private int animationSlower = 0;
-	
 	/**
 	 * 
 	 * @param file
 	 * @param yPos
 	 */
-	public Orb(File file, int yPos) {
+	public Orb(File file, int xPos, int yPos) {
 		
 		super();
 		
 		this.foregroundFile = file;
 		
+		this.targetxPos = xPos;
 		this.targetyPos = yPos; // The stated target position.
+		
+		this.state = DESTROYED;
+		
+		this.startingxPos = 150;
+		this.startingyPos = 32;
+		this.currentxPos = this.startingxPos;
+		this.currentyPos = this.startingyPos;
 		
 		initialize(); // Pre-load all information regarding images, image dimensions, and other details.
 		
@@ -44,7 +50,7 @@ public class Orb extends Button {
 	@Override
 	public void initialize() {
 		try {
-			this.backgroundImage = ImageIO.read(new File("res/orbs/backgrounds/btn_normal.png"));
+			this.backgroundImage = ImageIO.read(new File("res/orbs/backgrounds/large_normal_button.png"));
 			this.foregroundImage = ImageIO.read(this.foregroundFile);
 			this.imgWidth = this.backgroundImage.getWidth(null);
 			this.imgHeight = this.foregroundImage.getHeight(null);
@@ -54,41 +60,71 @@ public class Orb extends Button {
 	}
 	
 	public void onCreation(Graphics2D g2) { // This is the code for the starting animation
-		if(this.backgroundImage != null && this.foregroundImage != null && !doneAnimating) {
+		
+		if(this.backgroundImage != null && this.foregroundImage != null) {
 			g2.drawImage(this.backgroundImage,
-					150, increment, null);
-			g2.drawImage(this.foregroundImage,
-					159, increment+4, null);
+					this.targetxPos, this.currentyPos , null);
+			//g2.drawImage(this.foregroundImage,
+				//	159, this.currentyPos, null);
 		}
+	}
+	
+	
+	@Override
+	public void onDestruction(Graphics2D g2) {
+		g2.drawImage(this.backgroundImage, this.currentxPos, this.currentyPos, null);
 	}
 
 	@Override
 	public void draw(Graphics2D g2) { // Used for drawing
-		if(!doneAnimating)
-		{
-			onCreation(g2); // Timer no longer running
-		}
-		else {
-			g2.drawImage(this.backgroundImage, 150, targetyPos, null); // draw the background image after creation
-			g2.drawImage(this.foregroundImage, 159, targetyPos+6, null); // draw the foreground image after creation
-		}
+		switch(state) {
+		case CREATING:
+			onCreation(g2);
+			break;
+		case HOLDING:	
+			g2.drawImage(this.backgroundImage, this.targetxPos, this.targetyPos, null); // draw the background image after creation
+			//g2.drawImage(this.foregroundImage, 159, this.currentyPos+6, null); // draw the foreground image after creation
+			//onDestruction(g2);
+			break;
+		case DESTROYING:
+			onDestruction(g2);
+		
+		}	
 	}	
-
 	
 	@Override
 	public void update() {
-		if(!doneAnimating) {
-			this.animationSlower = 0;
-			System.out.println(increment);
-			if(this.increment <= this.targetyPos-36) {
-				increment += 16;
+		System.out.println(state);
+		switch(state) {
+		case CREATING:
+			if(this.currentyPos < this.targetyPos) {
+				this.currentyPos += 24;
+				System.out.println(this.currentyPos);
 			}
 			
-			else if(this.increment <= this.targetyPos && this.increment > this.targetyPos - 36) {
-				increment += 4;
-			}
 			
-			else this.doneAnimating = true;
+			else
+			{
+				System.out.println("Here's your problem");
+				this.state = HOLDING;
+			}
+			break;
+		
+		case HOLDING:
+			break;
+		case DESTROYING:
+			if(this.currentxPos > -96) {
+				this.currentxPos -= 12;
+			}
+			else {
+				state = DESTROYED;
+			}
+			break;
+		case DESTROYED:
+			this.currentxPos = this.startingxPos;
+			this.currentyPos = this.startingyPos;
+			break;
 		}
+		
 	}
 }
