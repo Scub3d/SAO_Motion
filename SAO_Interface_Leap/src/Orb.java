@@ -1,3 +1,4 @@
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -44,6 +45,8 @@ public class Orb extends Button {
 		this.currentxPos = this.startingxPos;
 		this.currentyPos = this.startingyPos;
 		
+		this.alpha = 1;
+		
 		initialize(); // Pre-load all information regarding images, image dimensions, and other details.
 		
 	}
@@ -52,6 +55,7 @@ public class Orb extends Button {
 		try {
 			this.backgroundImage = ImageIO.read(new File("res/orbs/backgrounds/large_normal_button.png"));
 			this.foregroundImage = ImageIO.read(this.foregroundFile);
+			this.selectedbgImage = ImageIO.read(new File("res/orbs/backgrounds/large_selected_button.png"));
 			this.imgWidth = this.backgroundImage.getWidth(null);
 			this.imgHeight = this.foregroundImage.getHeight(null);
 		} catch (IOException e) {
@@ -72,7 +76,7 @@ public class Orb extends Button {
 	
 	@Override
 	public void onDestruction(Graphics2D g2) {
-		g2.drawImage(this.backgroundImage, this.currentxPos, this.currentyPos, null);
+		g2.drawImage(this.backgroundImage, this.currentxPos, this.targetyPos, null);
 	}
 
 	@Override
@@ -82,9 +86,11 @@ public class Orb extends Button {
 			onCreation(g2);
 			break;
 		case HOLDING:	
-			g2.drawImage(this.backgroundImage, this.targetxPos, this.targetyPos, null); // draw the background image after creation
-			//g2.drawImage(this.foregroundImage, 159, this.currentyPos+6, null); // draw the foreground image after creation
-			//onDestruction(g2);
+			if(this.inHighlightedState)
+				g2.drawImage(this.selectedbgImage, this.currentxPos, this.currentyPos, null); // draw the background image after creation
+			else
+				g2.drawImage(this.backgroundImage, this.currentxPos, this.currentyPos, null);
+				
 			break;
 		case DESTROYING:
 			onDestruction(g2);
@@ -94,27 +100,38 @@ public class Orb extends Button {
 	
 	@Override
 	public void update() {
-		System.out.println(state);
 		switch(state) {
 		case CREATING:
-			if(this.currentyPos < this.targetyPos) {
+			if(this.currentyPos < this.targetyPos - 48) {
 				this.currentyPos += 24;
-				System.out.println(this.currentyPos);
 			}
+			
+			else if(this.currentyPos < this.targetyPos && this.currentyPos > this.targetyPos - 48) {
+				this.currentyPos += 8;
+			}
+			
 			
 			
 			else
 			{
-				System.out.println("Here's your problem");
+				this.currentxPos = this.targetxPos;
+				this.currentyPos = this.targetyPos;
 				this.state = HOLDING;
 			}
 			break;
 		
 		case HOLDING:
-			break;
+			break; 
+			
 		case DESTROYING:
+			this.alpha -= 0.01;
 			if(this.currentxPos > -96) {
-				this.currentxPos -= 12;
+				this.currentxPos -= 24;
+				System.out.println("Alpha: " +this.alpha);
+			}
+			if(this.alpha <= 0) {
+				this.alpha = 0;
+				System.out.println(this.alpha);
 			}
 			else {
 				state = DESTROYED;

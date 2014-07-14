@@ -77,6 +77,15 @@ public class MasterPanel extends JComponent implements Runnable, KeyListener{
 		}
 		if(stage == 1)
 		{
+			orbs[selectedOrb].isFocused(true);
+			if(!isKeyPressed && keyboardState[KeyEvent.VK_DOWN]) {
+				orbs[selectedOrb].isFocused(false);
+				isKeyPressed = true;
+				selectedOrb++;
+				if(selectedOrb > 4) {
+					selectedOrb = 0;
+				}
+			}
 			for(int orb = 0; orb < orbs.length; orb++) {
 				if(orbs[orb].state != 2 && orbs[orb].state != 1) {
 					orbs[orb].state = 1;
@@ -94,7 +103,7 @@ public class MasterPanel extends JComponent implements Runnable, KeyListener{
 		this.topImage = new File("res/orbs/orb_icons/info_normal.png");
 			this.startingOrbyPos = screenHeight / 4;
 			for(int i = 0; i < 5; i++) {
-				this.orbs[i] = new Orb(topImage, 150, startingOrbyPos + (108 * i));	
+				this.orbs[i] = new Orb(topImage, 500, startingOrbyPos + (108 * i));	
 		}
 	}
 	

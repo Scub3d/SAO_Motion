@@ -34,10 +34,13 @@ public abstract class Button {
 	protected File foregroundFile; // The foreground file to be used
 	
 	public Image backgroundImage; // The base button image
+	public Image selectedbgImage;
 	public Image foregroundImage; // The image to be overlayed
 	
 	protected int imgWidth; // Image width
 	protected int imgHeight; // Image height
+	
+	protected float alpha;
 	
 	/**
 	 * This method is used for initializing the program.
