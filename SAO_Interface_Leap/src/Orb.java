@@ -53,9 +53,9 @@ public class Orb extends Button {
 	@Override
 	public void initialize() {
 		try {
-			this.backgroundImage = ImageIO.read(new File("res/orbs/backgrounds/large_normal_button.png"));
+			this.backgroundImage = ImageIO.read(new File("res/orbs/backgrounds/large_normal_button.png")); // btn_normal
 			this.foregroundImage = ImageIO.read(this.foregroundFile);
-			this.selectedbgImage = ImageIO.read(new File("res/orbs/backgrounds/large_selected_button.png"));
+			this.selectedbgImage = ImageIO.read(new File("res/orbs/backgrounds/large_selected_button.png")); // btn_hover.png
 			this.imgWidth = this.backgroundImage.getWidth(null);
 			this.imgHeight = this.foregroundImage.getHeight(null);
 		} catch (IOException e) {
