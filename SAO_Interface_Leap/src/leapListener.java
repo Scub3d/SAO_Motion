@@ -49,10 +49,14 @@ class leapListener extends Listener {
     public ScreenTapGesture tap;
 	public boolean isCreated = false;
 	
+	public MasterPanel masterRacePanel = new MasterPanel();
+	
 	@Override
 	public void onFrame(Controller controller) {
         Frame current_frame = controller.frame();    // 3.0f , 1f, .2f also works okay
         Frame previous_frame = controller.frame(1);
+        
+        this.isCreated = false;
         
         if(previous_frame.isValid()) {
             for (int p = 0; p < current_frame.pointables().count();p++) {
@@ -103,7 +107,7 @@ class leapListener extends Listener {
         }
 
         if (!current_frame.hands().isEmpty() || !gestures.isEmpty()) {
-            //System.out.println(); Pass along data or just pass along even if there is no data. Probably the latter is better
+        	this.masterRacePanel.updateLeapData(this.hand, this.swipes, this.tap, this.isCreated);
         }
     }
 }
