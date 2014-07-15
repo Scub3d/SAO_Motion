@@ -88,4 +88,12 @@ public abstract class Button {
 		return this.targetyPos + (this.imgWidth/2);
 	}
 	
+	public int getImageWidth() {
+		return this.imgWidth;
+	}
+	
+	public int getImageHeight() {
+		return this.imgHeight;
+	}
+	
 }
