@@ -9,7 +9,11 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.JComponent;
+
 import com.leapmotion.leap.Controller;
+import com.leapmotion.leap.Hand;
+import com.leapmotion.leap.ScreenTapGesture;
+import com.leapmotion.leap.SwipeGesture;
 
 
 public class MasterPanel extends JComponent implements Runnable, KeyListener{
@@ -34,6 +38,11 @@ public class MasterPanel extends JComponent implements Runnable, KeyListener{
 	
 	private static boolean[] keyboardState = new boolean[525];
 	private boolean isKeyPressed;
+
+	private Boolean createMenu;
+	private ScreenTapGesture tap;
+	private SwipeGesture swipe;
+	private Hand hand;
 	
 	public MasterPanel() {
 		
@@ -52,9 +61,16 @@ public class MasterPanel extends JComponent implements Runnable, KeyListener{
 		}	
 	}
 	
+	public void updateLeapData(Hand hand, SwipeGesture swipe, ScreenTapGesture tap, Boolean createMenu) {
+		this.hand = hand;
+		this.swipe = swipe;
+		this.tap = tap;
+		this.createMenu = createMenu;
+	}
+	
 	public void update() {
 		
-		if(!isKeyPressed && getKeyboardState(KeyEvent.VK_R)) {
+		if(!isKeyPressed && getKeyboardState(KeyEvent.VK_R) || this.createMenu) {
 			stage++;
 			System.out.println("Enter Pressed");
 			isKeyPressed = !isKeyPressed;
