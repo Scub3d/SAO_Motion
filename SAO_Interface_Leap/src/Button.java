@@ -41,6 +41,7 @@ public abstract class Button {
 	protected int imgHeight; // Image height
 	
 	protected float alpha;
+	protected boolean isAlphaReset;
 	
 	/**
 	 * This method is used for initializing the program.

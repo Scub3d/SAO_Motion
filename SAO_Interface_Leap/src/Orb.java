@@ -35,7 +35,7 @@ public class Orb extends Button {
 		this.currentxPos = this.startingxPos;
 		this.currentyPos = this.startingyPos;
 		
-		this.alpha = 1;
+		this.alpha = 1f;
 		
 		initialize(); // Pre-load all information regarding images, image dimensions, and other details.
 		
@@ -92,8 +92,18 @@ public class Orb extends Button {
 	public void update() {
 		switch(state) {
 		case CREATING:
-			if(this.currentyPos < this.targetyPos - 48) {
+			
+			this.alpha = (float) this.currentyPos / this.targetyPos;
+			System.out.println(this.alpha);
+			
+			if(!this.isAlphaReset) {
+				this.alpha = 0;
+				this.isAlphaReset = true;
+			}
+			
+			else if(this.currentyPos < this.targetyPos - 48) {
 				this.currentyPos += 24;
+				
 			}
 			
 			else if(this.currentyPos < this.targetyPos && this.currentyPos > this.targetyPos - 48) {
@@ -104,6 +114,7 @@ public class Orb extends Button {
 			
 			else
 			{
+				this.alpha = 1;
 				this.currentxPos = this.targetxPos;
 				this.currentyPos = this.targetyPos;
 				this.state = HOLDING;
@@ -114,18 +125,12 @@ public class Orb extends Button {
 			break; 
 			
 		case DESTROYING:
-			System.out.println("Old: " + this.currentxPos);
-			
-			if(this.currentxPos > -80) {
+			this.alpha -= 0.12;
+			if(this.alpha >= 0) {
 				this.currentxPos -= 12;
-				this.alpha -= 0.12;
-				System.out.println("Alpha: " +this.alpha);
 			} else {
-				state = DESTROYED;
-			}
-			if(this.alpha <= 0) {
 				this.alpha = 0;
-				System.out.println(this.alpha);
+				state = DESTROYED;
 			}
 			break;
 		case DESTROYED:
