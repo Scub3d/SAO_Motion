@@ -1,19 +1,9 @@
 import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
-import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.Timer;
 
 /**
  * The orb is for the initial balls that load. These orbs initially load a file, and then are instantiated
@@ -68,8 +58,6 @@ public class Orb extends Button {
 		if(this.backgroundImage != null && this.foregroundImage != null) {
 			g2.drawImage(this.backgroundImage,
 					this.targetxPos, this.currentyPos , null);
-			//g2.drawImage(this.foregroundImage,
-				//	159, this.currentyPos, null);
 		}
 	}
 	
@@ -81,6 +69,8 @@ public class Orb extends Button {
 
 	@Override
 	public void draw(Graphics2D g2) { // Used for drawing
+		g2.setComposite(AlphaComposite.getInstance(
+	            AlphaComposite.SRC_OVER, this.alpha));
 		switch(state) {
 		case CREATING:
 			onCreation(g2);
@@ -124,23 +114,24 @@ public class Orb extends Button {
 			break; 
 			
 		case DESTROYING:
-			this.alpha -= 0.01;
-			if(this.currentxPos > -96) {
-				this.currentxPos -= 24;
+			System.out.println("Old: " + this.currentxPos);
+			
+			if(this.currentxPos > -80) {
+				this.currentxPos -= 12;
+				this.alpha -= 0.12;
 				System.out.println("Alpha: " +this.alpha);
+			} else {
+				state = DESTROYED;
 			}
 			if(this.alpha <= 0) {
 				this.alpha = 0;
 				System.out.println(this.alpha);
 			}
-			else {
-				state = DESTROYED;
-			}
 			break;
 		case DESTROYED:
 			this.currentxPos = this.startingxPos;
 			this.currentyPos = this.startingyPos;
-			break;
+			this.alpha = 1;
 		}
 		
 	}
