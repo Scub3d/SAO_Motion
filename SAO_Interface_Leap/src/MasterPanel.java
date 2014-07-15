@@ -39,10 +39,13 @@ public class MasterPanel extends JComponent implements Runnable, KeyListener{
 	private static boolean[] keyboardState = new boolean[525];
 	private boolean isKeyPressed;
 
-	private Boolean createMenu;
-	private ScreenTapGesture tap;
-	private SwipeGesture swipe;
-	private Hand hand;
+	private static Boolean createMenu = false;
+	private static ScreenTapGesture tap = null;
+	private static SwipeGesture swipe = null;
+	private static Hand hand = null;
+	
+	private boolean isActuallyCreated = false;
+
 	
 	public MasterPanel() {
 		
@@ -60,17 +63,17 @@ public class MasterPanel extends JComponent implements Runnable, KeyListener{
 			this.SAOthread.start();
 		}	
 	}
-	
-	public void updateLeapData(Hand hand, SwipeGesture swipe, ScreenTapGesture tap, Boolean createMenu) {
-		this.hand = hand;
-		this.swipe = swipe;
-		this.tap = tap;
-		this.createMenu = createMenu;
+		
+	public static void updateLeapData(Hand hand, SwipeGesture swipe, ScreenTapGesture tap, Boolean createMenu) {
+		MasterPanel.hand = hand;
+		MasterPanel.swipe = swipe;
+		MasterPanel.tap = tap;
+		MasterPanel.createMenu = createMenu;
 	}
 	
 	public void update() {
 		
-		if(!isKeyPressed && getKeyboardState(KeyEvent.VK_R) || this.createMenu) {
+		if(!isKeyPressed && getKeyboardState(KeyEvent.VK_R) || (MasterPanel.createMenu && !isKeyPressed)) {
 			stage++;
 			System.out.println("Enter Pressed");
 			isKeyPressed = !isKeyPressed;

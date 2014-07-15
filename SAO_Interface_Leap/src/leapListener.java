@@ -48,16 +48,12 @@ class leapListener extends Listener {
     public SwipeGesture swipes;
     public ScreenTapGesture tap;
 	public boolean isCreated = false;
-	
-	public MasterPanel masterRacePanel = new MasterPanel();
-	
+		
 	@Override
 	public void onFrame(Controller controller) {
         Frame current_frame = controller.frame();    // 3.0f , 1f, .2f also works okay
         Frame previous_frame = controller.frame(1);
-        
-        this.isCreated = false;
-        
+                
         if(previous_frame.isValid()) {
             for (int p = 0; p < current_frame.pointables().count();p++) {
             	Pointable pN = current_frame.pointables().get(p);
@@ -86,7 +82,6 @@ class leapListener extends Listener {
                 case TYPE_SWIPE:
                 	this.swipes = new SwipeGesture(gesture);
                 	if(this.swipes.state() == State.STATE_START) {
-                		System.out.println(this.swipes.direction());
 	                	if(this.swipes.direction().getY() < -.5 && Math.abs(this.swipes.direction().getX()) < .35 && Math.abs(this.swipes.direction().getZ()) < .35 && this.isCreated == false) {
 	                		this.isCreated = true;
 	                	} else if(this.swipes.direction().getX() < -.5 && Math.abs(this.swipes.direction().getY()) < .35 && Math.abs(this.swipes.direction().getZ()) < .35 && this.isCreated == true) {
@@ -107,7 +102,7 @@ class leapListener extends Listener {
         }
 
         if (!current_frame.hands().isEmpty() || !gestures.isEmpty()) {
-        	this.masterRacePanel.updateLeapData(this.hand, this.swipes, this.tap, this.isCreated);
+        	MasterPanel.updateLeapData(this.hand, this.swipes, this.tap, this.isCreated);
         }
     }
 }
