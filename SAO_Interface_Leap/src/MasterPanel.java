@@ -44,9 +44,6 @@ public class MasterPanel extends JComponent implements Runnable, KeyListener{
 	private static SwipeGesture swipe = null;
 	private static Hand hand = null;
 	
-	private boolean isActuallyCreated = false;
-
-	
 	public MasterPanel() {
 		
 		super();
